@@ -1,0 +1,88 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      th:include="layout :: page">
+
+<body>
+<div th:fragment="content">
+  <div class="container">
+    <h1>Hello</h1>
+
+    <h1>Form</h1>
+    <div class="form-group">
+      <form th:action="@{/edit}" th:object="${update}" method="post">
+
+        <input th:field="*{id}" class="form-control">
+
+
+        <label class="col-md-3 control-label" for="name">currency type</label>
+        <div class="col-md-9">
+          <select th:field="*{currencyType}" id="name" class="form-control">
+            <option th:each="currencyType :${cType}" th:value="${currencyType}"
+                    th:text="${currencyType}"></option>
+          </select>
+        </div>
+
+        <label class="col-md-3 control-label" for="tradeType">trade type</label>
+        <div class="col-md-9">
+          <select th:field="*{tradeType}" id="tradeType" class="form-control">
+            <option th:each="tradeType :${tType}" th:value="${tradeType}"
+                    th:text="${tradeType}"></option>
+          </select>
+        </div>
+
+        <label class="col-md-3 control-label" for="active">trade type</label>
+        <div class="col-md-9">
+          <select th:field="*{active}" id="active" class="form-control">
+            <option th:each="active :${aType}" th:value="${active}" th:text="${active}"></option>
+          </select>
+        </div>
+
+        <label class="col-md-3 control-label" for="quantity">Quantity</label>
+        <div class="col-md-9">
+          <input th:field="*{quantity}" th:text="${quantity}" id="quantity" name="quantity"
+                 type="number"
+                 placeholder="Quantity"
+                 class="form-control">
+        </div>
+
+        <div class="col-md-12 text-right">
+          <button type="submit" class="btn btn-primary btn-lg">edit</button>
+        </div>
+      </form>
+
+    </div>
+
+
+    <div>
+      <table>
+        <thead>
+        <tr>
+          <th>id</th>
+          <th>currency type</th>
+          <th>trade type</th>
+          <th>quantity</th>
+          <th>amount</th>
+          <th>create date</th>
+          <th>active</th>
+          <th>edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="trade: ${all}">
+          <td th:text="${trade.id}">id</td>
+          <td th:text="${trade.currencyType}">c type</td>
+          <td th:text="${trade.tradeType}">t type</td>
+          <td th:text="${trade.quantity}">quantity</td>
+          <td th:text="${trade.amount}">amount</td>
+          <td th:text="${trade.currentTrading}">create date</td>
+          <td th:if="${trade.active} ? #{deal_active}:#{deal_closed}">active</td>
+          <td><a th:href="@{/__${trade.id}__}">edit</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
