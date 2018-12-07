@@ -9,7 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -35,13 +34,11 @@ public class CustomDataBaseConnector {
 
     @Bean
     public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase database = builder
+        return new EmbeddedDatabaseBuilder()
             .setType(EmbeddedDatabaseType.H2)
             .addScript("script/schema.sql")
             .addScript("script/insert.sql")
             .build();
-        return database;
     }
 
 
@@ -61,11 +58,12 @@ public class CustomDataBaseConnector {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
+
     private Properties properties() {
         Properties properties = new Properties();
-        properties.setProperty("", dialect);
-        properties.setProperty("", show);
-        properties.setProperty("", hibernateHmb);
+        properties.setProperty("db.dialect", dialect);
+        properties.setProperty("hibernate.show_sql", show);
+        properties.setProperty("hibernate.hbm2ddl.auto", hibernateHmb);
         return properties;
     }
 }

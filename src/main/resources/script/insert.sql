@@ -6,3 +6,5 @@ insert into usr values(null,'admin','$2a$11$NRodhulZ6PVitKS/P/7hCegQo/m7BmxEqgRo
 insert into user_roles values(1,'USER');
 insert into user_roles values(2,'USER');
 insert into user_roles values(3,'ADMIN');
+
+

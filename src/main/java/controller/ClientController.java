@@ -2,8 +2,9 @@ package controller;
 
 import converter.RateJsonToRate;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import json.RateJson;
 import model.Rate;
-import model.RateJson;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +26,7 @@ public class ClientController {
         this.service = service;
     }
 
+    @PostConstruct
     @GetMapping("/api/current-rate")
     public List<Rate> rate() {
         RateJson[] rateJsons = restTemplate.getForObject(URL_CURRENT_RATE, RateJson[].class);

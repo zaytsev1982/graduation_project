@@ -1,7 +1,7 @@
 package converter;
 
 import model.Rate;
-import model.RateJson;
+import json.RateJson;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import service.RateService;

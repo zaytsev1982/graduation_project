@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml"
       th:include="layout :: page">
 
 
@@ -9,75 +9,69 @@
     <div class="row">
       <div class="col-md-5 text-right">
         <h1 th:text="'Hello ' + ${name}"></h1>
+        <div sec:authentication="principal.authorities">name</div>
       </div>
       <div class="col-md-3 text-right">
         <h1><a th:href="@{/logout}">log out</a></h1>
       </div>
     </div>
 
-    <script>
-      function al() {
-        alert('message');
-      }
-
-    </script>
-
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
             data-whatever="@mdo">Add trade
     </button>
-    <button id="json-example" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+    <button id="json-example" type="button" class="btn btn-primary" data-toggle="modal"
+            data-target="#exampleModal"
             data-whatever="@mdo">get json
     </button>
 
 
-    <!---->
-    <!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"-->
-         <!--aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-      <!--<div class="modal-dialog" role="document">-->
-        <!--<div class="modal-content">-->
-          <!--<div class="modal-header">-->
-            <!--<h5 class="modal-title" id="exampleModalLabel">New trade</h5>-->
-            <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-              <!--<span aria-hidden="true">&times;</span>-->
-            <!--</button>-->
-          <!--</div>-->
-          <!--<div class="modal-body">-->
-            <!--<form th:action="@{/add}" th:object="${newDeal}" method="post">-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New trade</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form th:action="@{/user/add}" th:object="${newTrade}" method="post">
 
-              <!--<input hidden="hidden" th:field="*{id}">-->
-              <!--<label class="col-form-label" for="name">currency type</label>-->
-              <!--<div class="col-md-9">-->
-                <!--<select th:field="*{currencyType}" id="name" class="form-control">-->
-                  <!--<option th:each="currencyType :${cType}" th:value="${currencyType}"-->
-                          <!--th:text="${currencyType}"></option>-->
-                <!--</select>-->
-              <!--</div>-->
+              <input hidden="hidden" th:field="*{id}">
+              <!--name-->
+              <label class="col-form-label" for="name">name</label>
+              <div class="col-md-9">
+                <input th:field="*{name}" id="name" name="name" type="text"
+                       placeholder="name"
+                       class="form-control">
+              </div>
+              <!--type-->
+              <label class="col-form-label" for="type">type</label>
+              <div class="col-md-9">
+                <input th:field="*{type}" id="type" name="type" type="text"
+                       placeholder="type"
+                       class="form-control">
+              </div>
+              <!--quantity-->
+              <label class="col-form-label" for="quantity">Quantity</label>
+              <div class="col-md-9">
+                <input th:field="*{quantity}" id="quantity" name="quantity" type="number"
+                       placeholder="Quantity"
+                       class="form-control">
+                <h1 th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></h1>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add</button>
+              </div>
 
-              <!--<label class="col-form-label" for="name1">trade type</label>-->
-              <!--<div class="col-md-9">-->
-                <!--<select th:field="*{tradeType}" id="name1" class="form-control">-->
-                  <!--<option th:each="tradeType :${tType}" th:value="${tradeType}"-->
-                          <!--th:text="${tradeType}"></option>-->
-                <!--</select>-->
-              <!--</div>-->
-
-              <!--<label class="col-form-label" for="quantity">Quantity</label>-->
-              <!--<div class="col-md-9">-->
-                <!--<input th:field="*{quantity}" id="quantity" name="quantity" type="number"-->
-                       <!--placeholder="Quantity"-->
-                       <!--class="form-control">-->
-                <!--<h1 th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></h1>-->
-              <!--</div>-->
-          <!--</div>-->
-          <!--<div class="modal-footer">-->
-            <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-            <!--<button type="submit" class="btn btn-primary">Add</button>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--</form>-->
-      <!--</div>-->
-    <!--</div>-->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     <div th:if="${message}" class="alert alert-success" role="alert">
@@ -85,36 +79,29 @@
     </div>
 
 
-    <div th:if="${not #lists.isEmpty(all)}" th:remove="tag">
+    <div sec:authorize="hasRole('ADMIN')" th:if="${not #lists.isEmpty(allDeal)}">
       <table class="table table-striped">
         <thead>
         <tr>
-          <th>id</th>
-          <th>currency type</th>
-          <th>trade type</th>
-          <th>quantity</th>
-          <th>amount</th>
-          <th>create date</th>
-          <th>active</th>
-          <th>manager</th>
-          <th>edit</th>
-          <th>delete</th>
+          <th th:text="#{label_deal_name}">name</th>
+          <th th:text="#{label_deal_type}">type</th>
+          <th th:text="#{label_deal_quantity}">quantity</th>
+          <th th:text="#{label_deal_amount}">amount</th>
+          <th th:text="#{label_deal_create_date}">create date</th>
+          <th th:text="#{label_deal_active_closed}">active</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="trade: ${all}">
-          <td th:text="${trade.id}">id</td>
-          <td th:text="${trade.currencyType}">c type</td>
-          <td th:text="${trade.tradeType}">t type</td>
-          <td th:text="${trade.quantity}">quantity</td>
-          <td th:text="${trade.amount}">amount</td>
-          <td th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy HH:mm')}">create date</td>
-          <td th:if="${trade.active}" th:text="#{deal_active}">
-          <td th:unless="${trade.active}" th:text="#{deal_closed}">
+        <tr th:each="trade: ${allDeal}">
+          <td th:text="${trade.name}"></td>
+          <td th:text="${trade.type}"></td>
+          <td th:text="${trade.quantity}"></td>
+          <td th:text="${trade.amount}"></td>
+          <td th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy HH:mm')}">create date
           </td>
-          <td th:text="${managerName}"></td>
-          <td><a th:href="@{/edit/__${trade.id}__}">edit</a></td>
-          <td><a onclick="al()" th:href="@{/delete/__${trade.id}__}">delete</a></td>
+          <td th:if="${trade.active}" th:text="#{label_deal_active}">
+          <td th:unless="${trade.active}" th:text="#{label_deal_closed}">
+          </td>
         </tr>
         </tbody>
       </table>

@@ -2,6 +2,7 @@ package config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -10,6 +11,7 @@ import service.user.UserServiceDetailsImpl;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserServiceDetailsImpl userService;
@@ -25,16 +27,31 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.formLogin().permitAll().loginPage("/login")
+        http.formLogin()
+            .permitAll()
+            .loginPage("/login")
+            .defaultSuccessUrl("/user")
             .usernameParameter("username")
             .passwordParameter("password")
+
             .and()
-            .rememberMe().key("remember-me").and()
-            .authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
+
+            .rememberMe().key("remember-me")
+
             .and()
-            .authorizeRequests().antMatchers("/user/**").hasRole("USER")
-            .antMatchers("/static/**", "/resources/**", "/", "/404").permitAll()
-            .anyRequest().permitAll();
+
+            .authorizeRequests()
+            .antMatchers("/admin/**").hasRole("ADMIN")
+
+            .and()
+
+            .authorizeRequests()
+            .antMatchers("/user/**")
+            .hasRole("USER")
+            .antMatchers("/static/**", "/resources/**", "/", "/404")
+            .permitAll()
+            .anyRequest()
+            .permitAll();
 
 
         http.exceptionHandling().accessDeniedPage("/403");
