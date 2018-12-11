@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.user.UserServiceDetailsImpl;
+import util.SuccessRedirectUrlHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -16,24 +17,27 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserServiceDetailsImpl userService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final SuccessRedirectUrlHandler redirectUrl;
 
     public CustomSecurityConfig(UserServiceDetailsImpl userService,
-        BCryptPasswordEncoder passwordEncoder) {
+        BCryptPasswordEncoder passwordEncoder, SuccessRedirectUrlHandler redirectUrl) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.redirectUrl = redirectUrl;
     }
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
+            .successHandler(redirectUrl)
             .permitAll()
             .loginPage("/login")
-            .defaultSuccessUrl("/user")
             .usernameParameter("username")
             .passwordParameter("password")
             .and()
             .rememberMe().key("remember-me")
+
             .and()
             .authorizeRequests()
             .antMatchers("/admin/**").hasRole("ADMIN")

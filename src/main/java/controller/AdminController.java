@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import service.RateService;
 import service.TradeService;
 
 @Controller
@@ -15,15 +16,18 @@ import service.TradeService;
 public class AdminController {
 
     private final TradeService tradeService;
+    private final RateService rateService;
 
-    public AdminController(TradeService tradeService) {
+    public AdminController(TradeService tradeService, RateService rateService) {
         this.tradeService = tradeService;
+        this.rateService = rateService;
     }
 
     @GetMapping
     public String adminPage(
         @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("allDeal", tradeService.all());
+        model.addAttribute("rates", rateService.all());
         model.addAttribute("name", user.getName());
         return "admin";
 

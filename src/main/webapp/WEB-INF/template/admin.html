@@ -29,7 +29,7 @@
         <td th:text="${trade.name}"></td>
         <td th:text="${trade.type}"></td>
         <td th:text="${trade.quantity}"></td>
-        <td th:text="${trade.amount}"></td>
+        <td th:text="${#numbers.formatDecimal(trade.amount,1,2)}"></td>
         <td th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy HH:mm')}">create date
         </td>
         <td th:if="${trade.active}" th:text="#{label_deal_active}">

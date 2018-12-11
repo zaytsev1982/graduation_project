@@ -68,53 +68,34 @@
   </div>
 
 
-  <div sec:authorize="hasRole('ADMIN')" th:if="${message}" class="alert alert-success"
-       role="alert">
-    <h1 th:text="${message}">delete success</h1>
+  <div th:if="${not #lists.isEmpty(allDeal)}">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th th:text="#{label_deal_name}">name</th>
+        <th th:text="#{label_deal_type}">type</th>
+        <th th:text="#{label_deal_quantity}">quantity</th>
+        <th th:text="#{label_deal_amount}">amount</th>
+        <th th:text="#{label_deal_create_date}">create date</th>
+        <th th:text="#{label_deal_active_closed}">active</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="trade: ${allDeal}">
+        <td th:text="${trade.name}"></td>
+        <td th:text="${trade.type}"></td>
+        <td th:text="${trade.quantity}"></td>
+        <td th:text="${#numbers.formatDecimal(trade.amount,1,2)}"></td>
+        <td th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy HH:mm')}">create date
+        </td>
+        <td th:if="${trade.active}" th:text="#{label_deal_active}">
+        <td th:unless="${trade.active}" th:text="#{label_deal_closed}">
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
-
-
-  <div class="row">
-    <div class="row">
-      <div sec:authorize="hasRole('USER')" th:if="${not #lists.isEmpty(allDeal)}">
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th th:text="#{label_deal_name}">name</th>
-            <th th:text="#{label_deal_type}">type</th>
-            <th th:text="#{label_deal_quantity}">quantity</th>
-            <th th:text="#{label_deal_amount}">amount</th>
-            <th th:text="#{label_deal_create_date}">create date</th>
-            <th th:text="#{label_deal_active_closed}">active</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="trade: ${allDeal}">
-            <td th:text="${trade.name}"></td>
-            <td th:text="${trade.type}"></td>
-            <td th:text="${trade.quantity}"></td>
-            <td th:text="${trade.amount}"></td>
-            <td th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy HH:mm')}">create date
-            </td>
-            <td th:if="${trade.active}" th:text="#{label_deal_active}">
-            <td th:unless="${trade.active}" th:text="#{label_deal_closed}">
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <!---->
-    <!---->
-    <!--<div class="row">-->
-    <!--<div>-->
-    <!--<div th:include="~{topic::topic}"></div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!---->
-    <!---->
-  </div>
-
 </div>
+
 </body>
 </html>

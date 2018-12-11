@@ -25,7 +25,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
-@ComponentScan({"controller", "converter"})
+@ComponentScan({"controller", "converter", "util"})
 @EnableWebMvc
 @Import(value = {CustomDataBaseConnector.class, CustomSecurityConfig.class, ThymeleafConfig.class})
 public class CustomWebConfig implements WebMvcConfigurer {
