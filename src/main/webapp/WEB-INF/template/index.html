@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml"
-      th:fragment="page">
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,7 +23,7 @@
           <span class="display-1 d-block">Banking</span>
           <div class="mb-4 lead">
 
-            <div th:if="${not #lists.isEmpty(rate)}">
+            <div th:if="${not #lists.isEmpty(rates)}">
               <div th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy')}"></div>
               <table class="table table-striped">
                 <thead>
@@ -35,7 +34,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="rateList :${rate}">
+                <tr th:each="rateList :${rates}">
                   <td th:text="${rateList.ccy}"></td>
                   <td th:text="${rateList.buy}"></td>
                   <td th:text="${rateList.sale}"></td>
@@ -47,24 +46,18 @@
             <p th:text="#{label_welcome}">Welcome to start page</p>
 
           </div>
-          <ul class="navbar-nav mr-auto col-sm-3 col-md-3">
-            <li class="nav-item active">
-              <a class="nav-link" th:href="@{/?lang=us}">English <span
-                  class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" th:href="@{/?lang=ru}">Russia <span class="sr-only">(current)</span></a>
-            </li>
 
-          </ul>
-          <a th:href="@{/login}" class="btn btn-link" th:text="#{label_sing_in}">sing in</a>
+
+          <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+             class="btn btn-link">logout</a>
+          <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-link"
+             th:text="#{label_sing_in}">sing in</a>
         </div>
       </div>
     </div>
   </div>
 
 </div>
-
 
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>

@@ -9,4 +9,8 @@ public interface RateService {
 
     List<Rate> all();
 
+    Double buyResult(String ccy);
+
+    Double saleResult(String ccy);
+
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns="http://www.w3.org/1999/xhtml"
       th:fragment="page">
 <head>
@@ -21,17 +22,23 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarColor01">
-    <ul class="navbar-nav mr-auto col-sm-3 col-md-3">
+    <ul sec:authorize="hasRole('USER')" class="navbar-nav mr-auto col-sm-3 col-md-3">
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/?lang=us}">English <span
+        <a class="nav-link" th:href="@{/user?lang=us}">English <span
             class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/?lang=ru}">Russia <span class="sr-only">(current)</span></a>
+        <a class="nav-link" th:href="@{/user?lang=ru}">Russia <span class="sr-only">(current)</span></a>
       </li>
 
     </ul>
-    <form class="form-inline my-2 my-lg-0">
+
+
+    <div sec:authorize="isAuthenticated()" class="col-md-3 text-right">
+      <span sec:authentication="name"></span>
+      <h1><a th:href="@{/logout}">log out</a></h1>
+    </div>
+    <form sec:authorize="isAnonymous()" class="form-inline my-2 my-lg-0">
       <button th:text="#{label_login}" class="btn btn-secondary my-2 my-sm-0" type="button"
               data-toggle="modal"
               data-target="#loginModal">Login
@@ -55,13 +62,15 @@
 
           <div class="form-label-group">
             <label th:text="#{label_login}" for="inputEmail">User Name</label>
-            <input th:text="#{label_login}" type="text" id="inputEmail" name="username" class="form-control"
+            <input th:text="#{label_login}" type="text" id="inputEmail" name="username"
+                   class="form-control"
                    th:placeholder="#{label_login}" required autofocus>
           </div>
 
           <div class="form-label-group">
             <label th:text="#{label_password}" for="inputPassword">Password</label>
-            <input th:text="#{label_password}" type="text" id="inputPassword" name="password" class="form-control"
+            <input th:text="#{label_password}" type="text" id="inputPassword" name="password"
+                   class="form-control"
                    th:placeholder="#{label_password}" required autofocus>
           </div>
 
@@ -70,23 +79,32 @@
               <input th:text="#{label_remember}" type="checkbox" value="remember-me">
             </label>
           </div>
-          <button th:text="#{label_sing_in}" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <button th:text="#{label_sing_in}" class="btn btn-lg btn-primary btn-block" type="submit">
+            Sign in
+          </button>
           <p class="mt-5 mb-3 text-muted text-center">© 2018-2019</p>
         </form>
 
       </div>
       <div class="modal-footer">
         <button th:text="#{label_reset}" type="reset" class="btn btn-primary">Reset</button>
-        <button th:text="#{label_close}" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button th:text="#{label_close}" type="button" class="btn btn-secondary"
+                data-dismiss="modal">Close
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-lg-2"></div>
-  <div class="col-lg-8">
-    <div th:include="this :: content"></div>
+  <div class="col-lg-1"></div>
+  <div class="col-lg-6">
+    <div sec:authorize="hasRole('ADMIN')" th:include="~{admin :: admin}"></div>
+    <div sec:authorize="hasRole('USER')" th:include="~{user :: content}"></div>
+    <div sec:authorize="isAnonymous()" th:include="~{login :: content}"></div>
+  </div>
+  <div class="col-lg-3">
+    <div th:include="~{topic::topic}"></div>
   </div>
 
 </div>

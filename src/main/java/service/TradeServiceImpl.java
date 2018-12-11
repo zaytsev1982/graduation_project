@@ -14,14 +14,23 @@ import repository.TradeRepository;
 public class TradeServiceImpl implements TradeService {
 
     private final TradeRepository tradeRepository;
+    private final RateService rateService;
 
-    public TradeServiceImpl(TradeRepository tradeRepository) {
+
+    public TradeServiceImpl(TradeRepository tradeRepository, RateService rateService) {
         this.tradeRepository = tradeRepository;
+        this.rateService = rateService;
     }
 
     @Override
     public Trade create(Trade trade) {
-
+        Double buyResult = rateService.buyResult(trade.getName());
+        Double saleResult = rateService.saleResult(trade.getName());
+        if (trade.getType().contains("BUY")) {
+            trade.setAmount(trade.getQuantity() * saleResult);
+        } else {
+            trade.setAmount(trade.getQuantity() * buyResult);
+        }
         trade.setActive(true);
         trade.setLocalDateTime(LocalDateTime.now());
         Trade save = tradeRepository.save(trade);

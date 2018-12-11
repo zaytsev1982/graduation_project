@@ -1,115 +1,120 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml"
       th:include="layout :: page">
 
 
 <body>
 <div th:fragment="content">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-5 text-right">
-        <h1 th:text="'Hello ' + ${name}"></h1>
-        <div sec:authentication="principal.authorities">name</div>
-      </div>
-      <div class="col-md-3 text-right">
-        <h1><a th:href="@{/logout}">log out</a></h1>
-      </div>
-    </div>
+
+  <button sec:authorize="hasRole('USER')" type="button" class="btn btn-primary"
+          data-toggle="modal" data-target="#exampleModal"
+          data-whatever="@mdo">Add trade
+  </button>
 
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-            data-whatever="@mdo">Add trade
-    </button>
-    <button id="json-example" type="button" class="btn btn-primary" data-toggle="modal"
-            data-target="#exampleModal"
-            data-whatever="@mdo">get json
-    </button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+       aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New trade</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form th:action="@{/user/add}" th:object="${newTrade}" method="post">
 
+            <input hidden="hidden" th:field="*{id}">
+            <!--name-->
+            <label class="col-form-label" for="name">name</label>
+            <div class="col-md-9">
+              <select th:field="*{name}" id="name" class="form-control">
+                <option th:each="rt:${rates}"
+                        th:value="${rt.ccy}"
+                        th:text="${rt.ccy}">
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New trade</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form th:action="@{/user/add}" th:object="${newTrade}" method="post">
+                </option>
+              </select>
+            </div>
+            <!--type-->
+            <label class="col-form-label" for="type">type</label>
+            <div class="col-md-9">
+              <select th:field="*{type}" id="type" name="type" class="form-control">
+                <option value="BUY">BUY</option>
+                <option value="SALE">SALE</option>
+              </select>
 
-              <input hidden="hidden" th:field="*{id}">
-              <!--name-->
-              <label class="col-form-label" for="name">name</label>
-              <div class="col-md-9">
-                <input th:field="*{name}" id="name" name="name" type="text"
-                       placeholder="name"
-                       class="form-control">
-              </div>
-              <!--type-->
-              <label class="col-form-label" for="type">type</label>
-              <div class="col-md-9">
-                <input th:field="*{type}" id="type" name="type" type="text"
-                       placeholder="type"
-                       class="form-control">
-              </div>
-              <!--quantity-->
-              <label class="col-form-label" for="quantity">Quantity</label>
-              <div class="col-md-9">
-                <input th:field="*{quantity}" id="quantity" name="quantity" type="number"
-                       placeholder="Quantity"
-                       class="form-control">
-                <h1 th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></h1>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add</button>
-              </div>
+            </div>
+            <!--quantity-->
+            <label class="col-form-label" for="quantity">Quantity</label>
+            <div class="col-md-9">
+              <input th:field="*{quantity}" id="quantity" name="quantity" type="number"
+                     placeholder="Quantity"
+                     class="form-control">
+              <h1 th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></h1>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+              </button>
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
 
-            </form>
-          </div>
+          </form>
         </div>
       </div>
     </div>
-
-
-    <div th:if="${message}" class="alert alert-success" role="alert">
-      <h1 th:text="${message}">delete success</h1>
-    </div>
-
-
-    <div sec:authorize="hasRole('ADMIN')" th:if="${not #lists.isEmpty(allDeal)}">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th th:text="#{label_deal_name}">name</th>
-          <th th:text="#{label_deal_type}">type</th>
-          <th th:text="#{label_deal_quantity}">quantity</th>
-          <th th:text="#{label_deal_amount}">amount</th>
-          <th th:text="#{label_deal_create_date}">create date</th>
-          <th th:text="#{label_deal_active_closed}">active</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="trade: ${allDeal}">
-          <td th:text="${trade.name}"></td>
-          <td th:text="${trade.type}"></td>
-          <td th:text="${trade.quantity}"></td>
-          <td th:text="${trade.amount}"></td>
-          <td th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy HH:mm')}">create date
-          </td>
-          <td th:if="${trade.active}" th:text="#{label_deal_active}">
-          <td th:unless="${trade.active}" th:text="#{label_deal_closed}">
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
   </div>
+
+
+  <div sec:authorize="hasRole('ADMIN')" th:if="${message}" class="alert alert-success"
+       role="alert">
+    <h1 th:text="${message}">delete success</h1>
+  </div>
+
+
+  <div class="row">
+    <div class="row">
+      <div sec:authorize="hasRole('USER')" th:if="${not #lists.isEmpty(allDeal)}">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th th:text="#{label_deal_name}">name</th>
+            <th th:text="#{label_deal_type}">type</th>
+            <th th:text="#{label_deal_quantity}">quantity</th>
+            <th th:text="#{label_deal_amount}">amount</th>
+            <th th:text="#{label_deal_create_date}">create date</th>
+            <th th:text="#{label_deal_active_closed}">active</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="trade: ${allDeal}">
+            <td th:text="${trade.name}"></td>
+            <td th:text="${trade.type}"></td>
+            <td th:text="${trade.quantity}"></td>
+            <td th:text="${trade.amount}"></td>
+            <td th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy HH:mm')}">create date
+            </td>
+            <td th:if="${trade.active}" th:text="#{label_deal_active}">
+            <td th:unless="${trade.active}" th:text="#{label_deal_closed}">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!---->
+    <!---->
+    <!--<div class="row">-->
+    <!--<div>-->
+    <!--<div th:include="~{topic::topic}"></div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!---->
+    <!---->
+  </div>
+
 </div>
-
-
 </body>
 </html>

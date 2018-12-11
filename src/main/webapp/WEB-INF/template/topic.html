@@ -4,9 +4,27 @@
 
 <body>
 <div th:fragment="topic">
-
-
+  <div th:if="${not #lists.isEmpty(rates)}">
+    <div th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy')}"></div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th th:text="#{label_ccy}"></th>
+        <th th:text="#{label_buy}"></th>
+        <th th:text="#{label_sale}"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="rateList :${rates}">
+        <td th:text="${rateList.ccy}"></td>
+        <td th:text="${#numbers.formatDecimal(rateList.buy,1,2)}"></td>
+        <td th:text="${#numbers.formatDecimal(rateList.sale,1,2)}"></td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+
+</div>
 </div>
 </body>
 </html>

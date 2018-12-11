@@ -21,7 +21,7 @@ public class AdminController {
     }
 
     @GetMapping
-    public String userPage(
+    public String adminPage(
         @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("allDeal", tradeService.all());
         model.addAttribute("name", user.getName());

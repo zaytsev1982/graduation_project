@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import service.RateService;
 import service.TradeService;
 
 @Controller
@@ -18,9 +19,11 @@ import service.TradeService;
 public class UserController {
 
     private final TradeService tradeService;
+    private final RateService rateService;
 
-    public UserController(TradeService tradeService) {
+    public UserController(TradeService tradeService, RateService rateService) {
         this.tradeService = tradeService;
+        this.rateService = rateService;
     }
 
     @GetMapping
@@ -28,6 +31,8 @@ public class UserController {
         @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("newTrade", new Trade());
         model.addAttribute("allDeal", tradeService.allByManager(user.getId()));
+        model.addAttribute("rates", rateService.all());
+        model.addAttribute("adminAllDeal", tradeService.all());
         model.addAttribute("name", user.getName());
         return "user";
 
@@ -46,7 +51,7 @@ public class UserController {
 
     @GetMapping(value = "/delete/{id}")
     public String closed(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-
+        tradeService.delete(id);
         redirectAttributes
             .addFlashAttribute("message", String.format("deal by id %d closed success", id));
         return "redirect:/user";

@@ -26,4 +26,16 @@ public class RateServiceImpl implements RateService {
     public List<Rate> all() {
         return rateRepository.findAll();
     }
+
+    @Override
+    public Double buyResult(String ccy) {
+        return rateRepository.buyResult(ccy);
+    }
+
+    @Override
+    public Double saleResult(String ccy) {
+        return rateRepository.saleResult(ccy);
+    }
+
+
 }

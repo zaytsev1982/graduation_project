@@ -26,28 +26,20 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.formLogin()
             .permitAll()
             .loginPage("/login")
             .defaultSuccessUrl("/user")
             .usernameParameter("username")
             .passwordParameter("password")
-
             .and()
-
             .rememberMe().key("remember-me")
-
             .and()
-
             .authorizeRequests()
             .antMatchers("/admin/**").hasRole("ADMIN")
-
             .and()
-
             .authorizeRequests()
-            .antMatchers("/user/**")
-            .hasRole("USER")
+            .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
             .antMatchers("/static/**", "/resources/**", "/", "/404")
             .permitAll()
             .anyRequest()

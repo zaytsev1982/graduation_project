@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.Locale;
+import javax.servlet.http.HttpSession;
 import model.user.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class MainController {
 
     @GetMapping({"/"})
     public String startPage(Model model, Locale locale) {
-        model.addAttribute("rate", rateService.all());
+        model.addAttribute("rates", rateService.all());
         return "index";
     }
 
@@ -27,6 +28,12 @@ public class MainController {
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 
 
@@ -38,7 +45,5 @@ public class MainController {
         model.addAttribute("user", "you do not have access rights");
         return "403";
     }
-
-
 
 }

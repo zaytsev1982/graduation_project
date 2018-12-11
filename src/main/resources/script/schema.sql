@@ -42,7 +42,7 @@ amount double,
 create_date datetime,
 active bit not null default true,
 version int not null default 0,
-manager_id int not null,
+manager_id bigint not null,
 primary key (id)
 )engine=InnoDB;
 

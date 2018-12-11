@@ -27,7 +27,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @Configuration
 @ComponentScan({"controller", "converter"})
 @EnableWebMvc
-@Import({CustomDataBaseConnector.class, CustomSecurityConfig.class, ThymeleafConfig.class})
+@Import(value = {CustomDataBaseConnector.class, CustomSecurityConfig.class, ThymeleafConfig.class})
 public class CustomWebConfig implements WebMvcConfigurer {
 
 

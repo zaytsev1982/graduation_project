@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"
       th:include="layout :: page">
 
 <body>
@@ -14,7 +14,8 @@
             <span class="display-1 d-block">Banking</span>
             <div class="mb-4 lead">
 
-              <div th:if="${not #lists.isEmpty(rate)}">
+
+              <div th:if="${not #lists.isEmpty(rates)}">
                 <div th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy')}"></div>
                 <table class="table table-striped">
                   <thead>
@@ -25,7 +26,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="rateList :${rate}">
+                  <tr th:each="rateList :${rates}">
                     <td th:text="${rateList.ccy}"></td>
                     <td th:text="${rateList.buy}"></td>
                     <td th:text="${rateList.sale}"></td>
@@ -37,7 +38,10 @@
               <p th:text="#{label_welcome}">Welcome to start page</p>
 
             </div>
-            <a th:href="@{/login}" class="btn btn-link" th:text="#{label_sing_in}">sing in</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+               class="btn btn-link">logout</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-link"
+               th:text="#{label_sing_in}">sing in</a>
           </div>
         </div>
       </div>
