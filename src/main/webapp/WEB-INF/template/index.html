@@ -21,37 +21,55 @@
       <div class="row justify-content-center">
         <div class="col-md-12 text-center">
           <span class="display-1 d-block">Banking</span>
-          <div class="mb-4 lead">
+          <div class="m-4 lead">
 
-            <div th:if="${not #lists.isEmpty(rates)}">
-              <div th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy')}"></div>
-              <table class="table table-striped">
-                <thead>
-                <tr>
-                  <th th:text="#{label_ccy}"></th>
-                  <th th:text="#{label_buy}"></th>
-                  <th th:text="#{label_sale}"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="rateList :${rates}">
-                  <td th:text="${rateList.ccy}"></td>
-                  <td th:text="${rateList.buy}"></td>
-                  <td th:text="${rateList.sale}"></td>
-                </tr>
-                </tbody>
-              </table>
+            <div class="align-self-star">
+              <div class="col-md-6 text-center"
+                   th:if="${not #lists.isEmpty(rates)}">
+                <div class="id" th:text="${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}"></div>
+                <table class="table table-striped ">
+                  <thead>
+                  <tr>
+                    <th th:text="#{label_ccy}"></th>
+                    <th th:text="#{label_buy}"></th>
+                    <th th:text="#{label_sale}"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="rateList :${rates}">
+                    <td th:text="${rateList.ccy}"></td>
+                    <td th:text="${#numbers.formatDecimal(rateList.buy, 1, 2) }"></td>
+                    <td th:text="${#numbers.formatDecimal(rateList.sale, 1, 2) }"></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <p th:text="#{label_welcome}">Welcome to start page</p>
 
           </div>
 
+          <div class="dropdown">
+            <button th:text="#{label_language}" type="button"
+                    class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 
-          <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
-             class="btn btn-link">logout</a>
-          <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-link"
-             th:text="#{label_sing_in}">sing in</a>
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" th:href="@{/?lang=ru}"
+                 th:text="#{label_language_ru}">Russian</a>
+              <a class="dropdown-item" th:href="@{?lang=us}"
+                 th:text="#{label_language_us}">English</a>
+            </div>
+          </div>
+
+
+          <div class="m-4">
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+               class="btn btn-link id"></a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-link id"
+               th:text="#{label_sing_in}"></a>
+          </div>
         </div>
       </div>
     </div>
