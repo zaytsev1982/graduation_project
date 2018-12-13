@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.Locale;
 import javax.servlet.http.HttpSession;
 import model.user.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,17 +17,12 @@ public class MainController {
         this.rateService = rateService;
     }
 
-    @GetMapping({"/"})
-    public String startPage(Model model, Locale locale) {
-        model.addAttribute("rates", rateService.all());
-        return "index";
-    }
+    @GetMapping({"/", "/login"})
+    public String startPage(Model model) {
 
-
-    @GetMapping("/login")
-    public String login() {
         return "login";
     }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

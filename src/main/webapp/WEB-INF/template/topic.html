@@ -5,7 +5,7 @@
 <body>
 <div th:fragment="topic">
   <div th:if="${not #lists.isEmpty(rates)}">
-    <div th:text="${#dates.format(#dates.createNow(), 'dd MM yyyy')}"></div>
+    <div><p>Course PB</p></div>
     <table class="table table-striped">
       <thead>
       <tr>
@@ -24,7 +24,25 @@
     </table>
   </div>
 
-</div>
+  <div id="scrol" th:if="${not #lists.isEmpty(courses)}">
+    <table class="table table-striped mt-4">
+      <thead>
+      <tr>
+        <th>name</th>
+        <th>course</th>
+        <th>code</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="nbu:${courses}">
+        <td th:text="${nbu.currencyName}"></td>
+        <td th:text="${#numbers.formatDecimal(nbu.course,1,2)}"></td>
+        <td th:text="${nbu.code}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 </body>
 </html>

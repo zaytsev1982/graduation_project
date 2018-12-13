@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import model.Trade;
 import model.user.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import service.NbuService;
 import service.RateService;
 import service.TradeService;
 
@@ -20,10 +22,13 @@ public class UserController {
 
     private final TradeService tradeService;
     private final RateService rateService;
+    private final NbuService nbuService;
 
-    public UserController(TradeService tradeService, RateService rateService) {
+    public UserController(TradeService tradeService, RateService rateService,
+        NbuService nbuService) {
         this.tradeService = tradeService;
         this.rateService = rateService;
+        this.nbuService = nbuService;
     }
 
     @GetMapping
@@ -33,6 +38,7 @@ public class UserController {
         model.addAttribute("allDeal", tradeService.allByManager(user.getId()));
         model.addAttribute("rates", rateService.all());
         model.addAttribute("adminAllDeal", tradeService.all());
+        model.addAttribute("courses", nbuService.findAll());
         model.addAttribute("name", user.getName());
         return "user";
 

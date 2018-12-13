@@ -46,6 +46,20 @@ manager_id bigint not null,
 primary key (id)
 )engine=InnoDB;
 
+
+create table nbu_course(
+id bigint not null auto_increment,
+article varchar not null,
+text varchar not null,
+course double not null,
+code varchar not null,
+exchangeDate date,
+primary key(id)
+)engine = InnoDB;
+
+
+
+
 alter table user_roles
 add constraint roles foreign key (user_id) references usr (id);
 

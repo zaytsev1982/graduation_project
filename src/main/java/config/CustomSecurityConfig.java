@@ -43,7 +43,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/admin/**").hasRole("ADMIN")
             .and()
             .authorizeRequests()
-            .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+            .antMatchers("/user/**").hasRole("USER")
             .antMatchers("/static/**", "/resources/**", "/", "/404")
             .permitAll()
             .anyRequest()
