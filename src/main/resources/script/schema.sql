@@ -11,6 +11,7 @@ ccy varchar not null,
 base_ccy varchar not null,
 buy double not null,
 sale double not null,
+create_date datetime,
 version int not null default 0,
 primary key (id)
 )engine=InnoDB;

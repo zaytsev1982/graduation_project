@@ -9,12 +9,12 @@
 
     <h1>Form</h1>
     <div class="form-group">
-      <form th:action="@{/edit}" th:object="${update}" method="post">
+      <form th:action="@{/edit}" th:object="${form}" method="post">
 
         <input th:field="*{id}" class="form-control">
 
 
-        <label class="col-md-3 control-label" for="name">currency type</label>
+        <label class="col-md-3 control-label" for="name">ccy</label>
         <div class="col-md-9">
           <select th:field="*{currencyType}" id="name" class="form-control">
             <option th:each="currencyType :${cType}" th:value="${currencyType}"

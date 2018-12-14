@@ -32,7 +32,7 @@ public class TradeServiceImpl implements TradeService {
             trade.setAmount(trade.getQuantity() * buyResult);
         }
         trade.setActive(true);
-        trade.setLocalDateTime(LocalDateTime.now());
+        trade.setDateTime(LocalDateTime.now());
         Trade save = tradeRepository.save(trade);
 
         return save;

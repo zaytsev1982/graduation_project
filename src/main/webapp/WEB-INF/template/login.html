@@ -47,6 +47,21 @@
         </div>
       </div>
     </div>
+
+    <div class="dropdown">
+      <button th:text="#{label_language}" type="button"
+              class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" th:href="@{/?lang=ru}"
+           th:text="#{label_language_ru}">Russian</a>
+        <a class="dropdown-item" th:href="@{?lang=us}"
+           th:text="#{label_language_us}">English</a>
+      </div>
+    </div>
+
+
   </div>
 
 

@@ -6,20 +6,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import service.RateService;
 
 @Controller
 public class MainController {
 
-    private final RateService rateService;
-
-    public MainController(RateService rateService) {
-        this.rateService = rateService;
-    }
-
     @GetMapping({"/", "/login"})
-    public String startPage(Model model) {
-
+    public String startPage() {
         return "login";
     }
 

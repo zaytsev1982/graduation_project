@@ -1,5 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       th:include="layout :: page">
 
 <body>
@@ -12,6 +13,7 @@
         <th th:text="#{label_ccy}"></th>
         <th th:text="#{label_buy}"></th>
         <th th:text="#{label_sale}"></th>
+        <th sec:authorize="hasRole('ADMIN')">edit</th>
       </tr>
       </thead>
       <tbody>
@@ -19,6 +21,8 @@
         <td th:text="${rateList.ccy}"></td>
         <td th:text="${#numbers.formatDecimal(rateList.buy,1,2)}"></td>
         <td th:text="${#numbers.formatDecimal(rateList.sale,1,2)}"></td>
+        <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/edit/{id}(id=${rateList.id})}">edit</a>
+        </td>
       </tr>
       </tbody>
     </table>

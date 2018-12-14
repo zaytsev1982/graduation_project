@@ -1,7 +1,8 @@
 package converter;
 
-import model.Rate;
+import java.time.LocalDateTime;
 import json.RateJson;
+import model.Rate;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import service.RateService;
@@ -22,6 +23,7 @@ public class RateJsonToRate implements Converter<RateJson, Rate> {
         rate.setBaseCcy(rateJson.getBaseCcy());
         rate.setBuy(Double.parseDouble(rateJson.getBuy()));
         rate.setSale(Double.parseDouble(rateJson.getSale()));
+        rate.setCreateDate(LocalDateTime.now());
         return rateService.save(rate);
     }
 }

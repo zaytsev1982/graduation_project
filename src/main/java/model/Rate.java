@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,8 @@ public class Rate {
     private Double buy;
     @Column(name = "sale")
     private Double sale;
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
     @Version
     private Integer version;
 
@@ -72,6 +75,14 @@ public class Rate {
 
     public void setSale(Double sale) {
         this.sale = sale;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     @Override

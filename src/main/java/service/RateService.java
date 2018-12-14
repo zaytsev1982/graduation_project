@@ -9,8 +9,12 @@ public interface RateService {
 
     List<Rate> all();
 
+    List<Rate> allByDateTime();
+
     Double buyResult(String ccy);
 
     Double saleResult(String ccy);
+
+    Rate findOne(Long id);
 
 }

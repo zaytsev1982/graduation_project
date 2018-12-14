@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,6 +14,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
@@ -21,12 +23,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 @ComponentScan({"controller", "converter", "util"})
 @EnableWebMvc
+@EnableScheduling
 @Import(value = {CustomDataBaseConnector.class, CustomSecurityConfig.class, ThymeleafConfig.class})
 public class CustomWebConfig implements WebMvcConfigurer {
 
@@ -48,16 +51,23 @@ public class CustomWebConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
-        return localeResolver;
+        SessionLocaleResolver resolver = new SessionLocaleResolver();
+        resolver.setDefaultLocale(Locale.ENGLISH);
+        return resolver;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        return localeChangeInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("lang");
-        registry.addInterceptor(localeChangeInterceptor);
+        registry.addInterceptor(localeChangeInterceptor());
     }
+
 
     @Bean
     public LocalValidatorFactoryBean getValidator() {

@@ -18,13 +18,31 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public Rate save(Rate rate) {
-        return rateRepository.save(rate);
+        if (rate.getId() == null) {
+            return rateRepository.save(rate);
+        } else {
+            Rate update = findOne(rate.getId());
+            update.setId(rate.getId());
+            update.setCcy(rate.getCcy());
+            update.setBaseCcy(rate.getBaseCcy());
+            update.setBuy(rate.getBuy());
+            update.setSale(rate.getSale());
+
+            return rateRepository.save(update);
+        }
+
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Rate> all() {
         return rateRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Rate> allByDateTime() {
+        return rateRepository.byDate();
     }
 
     @Override
@@ -35,6 +53,12 @@ public class RateServiceImpl implements RateService {
     @Override
     public Double saleResult(String ccy) {
         return rateRepository.saleResult(ccy);
+    }
+
+    @Override
+    public Rate findOne(Long id) {
+        return rateRepository.findById(id).orElseThrow(
+            () -> new IllegalArgumentException("rate by id: " + id + " fot found"));
     }
 
 
