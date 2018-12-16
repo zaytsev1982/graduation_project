@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import service.NbuService;
 import service.RateService;
 import service.TradeService;
 
@@ -20,10 +21,13 @@ public class AdminController {
 
     private final TradeService tradeService;
     private final RateService rateService;
+    private final NbuService nbuService;
 
-    public AdminController(TradeService tradeService, RateService rateService) {
+    public AdminController(TradeService tradeService, RateService rateService,
+        NbuService nbuService) {
         this.tradeService = tradeService;
         this.rateService = rateService;
+        this.nbuService = nbuService;
     }
 
     @GetMapping
@@ -31,6 +35,7 @@ public class AdminController {
         @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("allDeal", tradeService.all());
         model.addAttribute("rates", rateService.allByDateTime());
+        model.addAttribute("courses", nbuService.findAll());
         model.addAttribute("name", user.getName());
         return "admin";
 

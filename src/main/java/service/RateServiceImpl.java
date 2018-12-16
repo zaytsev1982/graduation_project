@@ -1,7 +1,10 @@
 package service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
 import model.Rate;
+import org.hibernate.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.RateRepository;
@@ -27,7 +30,7 @@ public class RateServiceImpl implements RateService {
             update.setBaseCcy(rate.getBaseCcy());
             update.setBuy(rate.getBuy());
             update.setSale(rate.getSale());
-
+            update.setCreateDate(LocalDateTime.now());
             return rateRepository.save(update);
         }
 
@@ -47,6 +50,7 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public Double buyResult(String ccy) {
+
         return rateRepository.buyResult(ccy);
     }
 

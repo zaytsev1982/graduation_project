@@ -38,7 +38,7 @@ public class ClientController {
     }
 
     @PostConstruct
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 10000)
     @GetMapping("/api/current-rate")
     public void rate() {
         RateJson[] rateJsons = restTemplate.getForObject(URL_CURRENT_RATE, RateJson[].class);
