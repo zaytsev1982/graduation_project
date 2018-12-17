@@ -1,10 +1,12 @@
 package controller;
 
+import javax.validation.Valid;
 import model.Rate;
 import model.user.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,16 +49,20 @@ public class AdminController {
         return new ModelAndView("edit", "form", rateService.findOne(id));
     }
 
-    @GetMapping("/create")
-    public String createRateForm(Rate rate, Model model) {
-        model.addAttribute("create", new Rate());
+    @GetMapping("/createForm")
+    public String createRateForm(Model model) {
+        model.addAttribute("createRate", new Rate());
         return "create";
     }
 
-    @PostMapping("/create")
-    public String createRate(@ModelAttribute("create") Rate rate, Model model) {
+    @PostMapping("/add")
+    public String createRate(@ModelAttribute("createRate") @Valid Rate rate, BindingResult result,
+        Model model) {
+        if (result.hasErrors()) {
+            return "redirect:/admin/createForm";
+        }
         Rate save = rateService.save(rate);
-        model.addAttribute("create", save);
+        model.addAttribute("createRate", save);
         return "redirect:/admin";
     }
 

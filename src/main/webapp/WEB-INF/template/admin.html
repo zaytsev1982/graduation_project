@@ -6,7 +6,7 @@
 <body>
 <div th:fragment="admin">
   <br/>
-  <button class="btn-primary" type="button" ><a th:href="@{/admin/create}" >create</a></button>
+  <button class="btn-primary" type="button" ><a th:href="@{/admin/createForm}" >create</a></button>
 
   <div th:if="${message}" class="alert alert-success" role="alert">
     <h1 th:text="${message}">delete success</h1>

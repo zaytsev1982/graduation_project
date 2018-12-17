@@ -11,12 +11,9 @@
 
     <h1>Form</h1>
     <div class="form-group">
-      <form th:action="@{/admin/create}" th:object="${create}" method="post">
+      <form th:action="@{/admin/add}" th:object="${createRate}" method="post">
 
-        <input th:field="*{id}" hidden="hidden" class="form-control">
-
-
-        <label class="col-md-3 control-label" for="ccy">ccy</label>
+        <label class="col-md3 control-label" for="ccy">ccy</label>
         <div class="col-md-6">
           <input th:field="*{ccy}" id="ccy" class="form-control">
         </div>

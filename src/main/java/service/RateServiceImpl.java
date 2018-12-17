@@ -20,6 +20,7 @@ public class RateServiceImpl implements RateService {
     @Override
     public Rate save(Rate rate) {
         if (rate.getId() == null) {
+            rate.setCreateDate(LocalDateTime.now());
             return rateRepository.save(rate);
         } else {
             Rate update = findOne(rate.getId());
