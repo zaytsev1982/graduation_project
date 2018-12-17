@@ -11,9 +11,9 @@ public interface RateService {
 
     List<Rate> allByDateTime();
 
-    Double buyResult(String ccy);
+    Double saleResult(String currency);
 
-    Double saleResult(String ccy);
+    Double buyResult(String currency);
 
     Rate findOne(Long id);
 

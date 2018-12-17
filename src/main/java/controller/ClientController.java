@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 import json.NbuJson;
 import json.RateJson;
 import model.Nbu;
-import org.springframework.scheduling.annotation.Scheduled;
+import model.Rate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -38,15 +38,15 @@ public class ClientController {
     }
 
     @PostConstruct
-    @Scheduled(fixedDelay = 10000)
+//    @Scheduled(fixedDelay = 5000)
     @GetMapping("/api/current-rate")
-    public void rate() {
+    public List<Rate> rate() {
         RateJson[] rateJsons = restTemplate.getForObject(URL_CURRENT_RATE, RateJson[].class);
 
         for (RateJson r : rateJsons) {
             converter.convert(r);
         }
-
+        return service.all();
     }
 
     @PostConstruct

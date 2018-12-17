@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns="http://www.w3.org/1999/xhtml"
-      lang="us"
+      lang="en"
       th:fragment="page">
 
 <div th:replace="~{header::head}"></div>
@@ -16,13 +16,20 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarColor01">
-    <ul sec:authorize="hasRole('USER')" class="navbar-nav mr-auto col-sm-3 col-md-3">
+    <ul class="navbar-nav mr-auto col-sm-3 col-md-3">
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/user?lang=us}">English <span
+        <a sec:authorize="hasRole('USER')" class="nav-link" th:href="@{/user?lang=en}">English <span
             class="sr-only">(current)</span></a>
+        <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/admin?lang=en}">English
+          <span
+              class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/user?lang=ru}">Russia <span class="sr-only">(current)</span></a>
+        <a sec:authorize="hasRole('USER')" class="nav-link" th:href="@{/user?lang=ru}">Russia <span
+            class="sr-only">(current)</span></a>
+        <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/admin?lang=ru}">Russia
+          <span
+              class="sr-only">(current)</span></a>
       </li>
     </ul>
     <div sec:authorize="isAuthenticated()" class="col-md-3 text-right">
@@ -88,6 +95,7 @@
 
 <div class="container">
   <div class="row">
+
     <div sec:authorize="hasRole('ADMIN')" class="col-lg-7 mr-3" th:insert="~{this::admin}"></div>
     <div sec:authorize="hasRole('USER')" class="col-lg-7  mr-3"
          th:insert="~{user :: content}"></div>

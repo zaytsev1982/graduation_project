@@ -24,13 +24,10 @@ public class TradeServiceImpl implements TradeService {
 
     @Override
     public Trade create(Trade trade) {
-        Double buyResult = rateService.buyResult(trade.getName());
-        Double saleResult = rateService.saleResult(trade.getName());
-        if (trade.getType().contains("BUY")) {
-            trade.setAmount(trade.getQuantity() * saleResult);
-        } else {
-            trade.setAmount(trade.getQuantity() * buyResult);
-        }
+
+        trade.setAmount(trade.getType().contains("BUY") ? trade.getQuantity() * rateService
+            .buyResult(trade.getName())
+            : trade.getQuantity() * rateService.saleResult(trade.getName()));
         trade.setActive(true);
         trade.setDateTime(LocalDateTime.now());
         Trade save = tradeRepository.save(trade);
@@ -64,4 +61,6 @@ public class TradeServiceImpl implements TradeService {
         trade.setActive(false);
         tradeRepository.save(trade);
     }
+
+
 }

@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +47,18 @@ public class AdminController {
         return new ModelAndView("edit", "form", rateService.findOne(id));
     }
 
+    @GetMapping("/create")
+    public String createRateForm(Rate rate, Model model) {
+        model.addAttribute("create", new Rate());
+        return "create";
+    }
+
+    @PostMapping("/create")
+    public String createRate(@ModelAttribute("create") Rate rate, Model model) {
+        Rate save = rateService.save(rate);
+        model.addAttribute("create", save);
+        return "redirect:/admin";
+    }
 
     @PostMapping("/edit")
     public String edit(Rate rate) {

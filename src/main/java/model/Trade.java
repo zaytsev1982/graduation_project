@@ -29,7 +29,7 @@ public class Trade {
     @Column(name = "amount")
     private Double amount;
     @Column(name = "create_date")
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateTime;
     @Column(name = "active")
     private boolean active;

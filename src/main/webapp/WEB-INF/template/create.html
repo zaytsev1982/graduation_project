@@ -11,36 +11,34 @@
 
     <h1>Form</h1>
     <div class="form-group">
-      <form th:action="@{/admin/edit}" th:object="${form}" method="post">
-        <label class="col-md-3 control-label" for="idRate">ccy</label>
-        <div class="col-md-6">
-          <input th:field="*{id}" id="idRate" class="form-control">
-        </div>
+      <form th:action="@{/admin/create}" th:object="${create}" method="post">
+
+        <input th:field="*{id}" hidden="hidden" class="form-control">
 
 
         <label class="col-md-3 control-label" for="ccy">ccy</label>
         <div class="col-md-6">
-          <input th:field="*{ccy}" id="ccy" class="form-control" th:value="${form.ccy}">
+          <input th:field="*{ccy}" id="ccy" class="form-control">
         </div>
         <label class="col-md-3 control-label" for="base">base ccy</label>
         <div class="col-md-6">
-          <input th:field="*{baseCcy}" id="base" class="form-control" th:value="${form.baseCcy}">
+          <input th:field="*{baseCcy}" id="base" class="form-control">
         </div>
 
 
         <label class="col-md-3 control-label" for="buy">buy</label>
         <div class="col-md-6">
-          <input th:field="*{buy}" id="buy" class="form-control" th:value="${form.buy}">
+          <input th:field="*{buy}" id="buy" class="form-control">
         </div>
 
         <label class="col-md-3 control-label" for="sale">sale</label>
         <div class="col-md-6">
-          <input th:field="*{sale}" id="sale" class="form-control" th:value="${form.sale}">
+          <input th:field="*{sale}" id="sale" class="form-control">
         </div>
 
 
-        <div class="col-md-12 text-right">
-          <button type="submit" class="btn btn-primary btn-lg">edit</button>
+        <div class="col-md-9 text-right">
+          <button type="submit" class="btn btn-primary btn-lg">create</button>
         </div>
       </form>
 

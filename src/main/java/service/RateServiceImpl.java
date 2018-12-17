@@ -2,9 +2,7 @@ package service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
 import model.Rate;
-import org.hibernate.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.RateRepository;
@@ -49,15 +47,15 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public Double buyResult(String ccy) {
-
-        return rateRepository.buyResult(ccy);
+    public Double saleResult(String currency) {
+        return rateRepository.saleResult(currency);
     }
 
     @Override
-    public Double saleResult(String ccy) {
-        return rateRepository.saleResult(ccy);
+    public Double buyResult(String currency) {
+        return rateRepository.buyResult(currency);
     }
+
 
     @Override
     public Rate findOne(Long id) {
